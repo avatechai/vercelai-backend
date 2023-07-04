@@ -7,26 +7,27 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 export const runtime = 'edge'
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY
-})
-
-const openai = new OpenAIApi(configuration)
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY
+// })
+// const openai = new OpenAIApi(configuration)
 
 export async function POST(req: Request) {
   const json = await req.json()
-  const { messages, previewToken } = json
+  const { messages, apiKey } = json
   // const userId = (await auth())?.user.id
+  const configuration = new Configuration({
+    apiKey: apiKey
+  })
 
+  console.log(apiKey)
+
+  const openai = new OpenAIApi(configuration)
   // if (!userId) {
   //   return new Response('Unauthorized', {
   //     status: 401
   //   })
   // }
-
-  if (previewToken) {
-    configuration.apiKey = previewToken
-  }
 
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -34,6 +35,8 @@ export async function POST(req: Request) {
     temperature: 0.7,
     stream: true
   })
+
+  // console.log(await res.ok, res.body)
 
   const stream = OpenAIStream(res, {
     // async onCompletion(completion) {
