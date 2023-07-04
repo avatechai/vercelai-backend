@@ -7,22 +7,22 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 export const runtime = 'edge'
 
-// const configuration = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY
-// })
-// const openai = new OpenAIApi(configuration)
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY
+})
+const openai = new OpenAIApi(configuration)
 
 export async function POST(req: Request) {
   const json = await req.json()
   const { messages, apiKey } = json
   // const userId = (await auth())?.user.id
-  const configuration = new Configuration({
-    apiKey: apiKey
-  })
+  // const configuration = new Configuration({
+  //   apiKey: apiKey
+  // })
 
-  console.log(apiKey)
+  // console.log(apiKey)
 
-  const openai = new OpenAIApi(configuration)
+  // const openai = new OpenAIApi(configuration)
   // if (!userId) {
   //   return new Response('Unauthorized', {
   //     status: 401
