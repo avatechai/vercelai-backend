@@ -15,6 +15,7 @@ const openai = new OpenAIApi(configuration)
 export async function POST(req: Request) {
   const json = await req.json()
   const { messages, apiKey } = json
+
   // const userId = (await auth())?.user.id
   // const configuration = new Configuration({
   //   apiKey: apiKey
@@ -35,7 +36,6 @@ export async function POST(req: Request) {
     temperature: 0.7,
     stream: true
   })
-
   // console.log(await res.ok, res.body)
 
   const stream = OpenAIStream(res, {
@@ -66,5 +66,13 @@ export async function POST(req: Request) {
     // }
   })
 
-  return new StreamingTextResponse(stream)
+  return new StreamingTextResponse(stream, {
+    headers: {
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+      'Access-Control-Allow-Headers':
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    }
+  })
 }
